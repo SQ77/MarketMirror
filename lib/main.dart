@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'pages/login_page.dart';
 
-void main() async {
-  await Supabase.initialize(
-    url: "https://vzomabqwyswafxrjqzmy.supabase.co",
-    anonKey:
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZ6b21hYnF3eXN3YWZ4cmpxem15Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDkwMDQ0MjEsImV4cCI6MjA2NDU4MDQyMX0.i5AEzbXs4bvLSfgZ33aNGKHiNGQlPhribirym8Ahxc8",
-  );
+Future main() async {
+  await dotenv.load();
+  final supabaseUrl = dotenv.env['SUPABASE_URL'];
+  final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
+
+  if (supabaseUrl == null || supabaseAnonKey == null) {
+    throw Exception('Missing SUPABASE_URL or SUPABASE_ANON_KEY in .env file');
+  }
+
+  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
   runApp(const MyApp());
 }
 
