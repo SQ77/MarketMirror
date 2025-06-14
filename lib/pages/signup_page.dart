@@ -1,28 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:marketmirror/auth/auth_service.dart';
-import 'package:marketmirror/pages/signup_page.dart';
+import 'package:marketmirror/pages/login_page.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final _authService = AuthService();
   final _formKey = GlobalKey<FormState>();
 
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
 
   bool _isLoading = false;
   bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -41,13 +44,26 @@ class _LoginPageState extends State<LoginPage> {
     if (value == null || value.isEmpty) {
       return 'Password is required';
     }
-    if (value.length < 6) {
-      return 'Password must be at least 6 characters';
+    if (value.length < 8) {
+      return 'Password must be at least 8 characters';
+    }
+    if (!RegExp(r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)').hasMatch(value)) {
+      return 'Password must contain uppercase, lowercase, and number';
     }
     return null;
   }
 
-  Future<void> _login() async {
+  String? _validateConfirmPassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please confirm your password';
+    }
+    if (value != _passwordController.text) {
+      return 'Passwords do not match';
+    }
+    return null;
+  }
+
+  Future<void> _signUp() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -57,15 +73,43 @@ class _LoginPageState extends State<LoginPage> {
     });
 
     try {
-      await _authService.signInWithEmailPassword(
+      final response = await _authService.signUpWithEmailPassword(
         _emailController.text.trim(),
         _passwordController.text,
       );
+
+      if (mounted) {
+        if (response.user != null) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text(
+                'Account created successfully! Please check your email for verification.',
+              ),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+              duration: Duration(seconds: 5),
+            ),
+          );
+          // Navigate back to login or home
+          Navigator.pop(context);
+        }
+      }
     } catch (e) {
       if (mounted) {
+        String errorMessage = 'Sign up failed';
+
+        // Handle specific Supabase errors
+        if (e.toString().contains('User already registered')) {
+          errorMessage = 'An account with this email already exists';
+        } else if (e.toString().contains('Password should be at least')) {
+          errorMessage = 'Password is too weak';
+        } else if (e.toString().contains('Invalid email')) {
+          errorMessage = 'Please enter a valid email address';
+        }
+
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Login failed: ${e.toString()}'),
+            content: Text(errorMessage),
             backgroundColor: Theme.of(context).colorScheme.error,
             behavior: SnackBarBehavior.floating,
           ),
@@ -84,24 +128,25 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
           child: Form(
             key: _formKey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                const SizedBox(height: 32),
+
                 // Logo or app name
                 Icon(
-                  Icons.account_circle,
+                  Icons.person_add,
                   size: 80,
                   color: Theme.of(context).primaryColor,
                 ),
                 const SizedBox(height: 32),
 
                 Text(
-                  'Welcome to MarketMirror',
+                  'Create Account',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
@@ -110,7 +155,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 8),
 
                 Text(
-                  'Sign in to your account',
+                  'Sign up to get started',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                     color: Theme.of(context).textTheme.bodySmall?.color,
                   ),
@@ -138,8 +183,7 @@ class _LoginPageState extends State<LoginPage> {
                   controller: _passwordController,
                   validator: _validatePassword,
                   obscureText: !_isPasswordVisible,
-                  textInputAction: TextInputAction.done,
-                  onFieldSubmitted: (_) => _login(),
+                  textInputAction: TextInputAction.next,
                   decoration: InputDecoration(
                     labelText: 'Password',
                     hintText: 'Enter your password',
@@ -157,15 +201,47 @@ class _LoginPageState extends State<LoginPage> {
                       },
                     ),
                     border: const OutlineInputBorder(),
+                    helperText:
+                        'At least 8 characters with uppercase, lowercase, and number',
+                    helperMaxLines: 2,
+                  ),
+                ),
+                const SizedBox(height: 16),
+
+                // Confirm Password field
+                TextFormField(
+                  controller: _confirmPasswordController,
+                  validator: _validateConfirmPassword,
+                  obscureText: !_isConfirmPasswordVisible,
+                  textInputAction: TextInputAction.done,
+                  onFieldSubmitted: (_) => _signUp(),
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                    hintText: 'Re-enter your password',
+                    prefixIcon: const Icon(Icons.lock_outlined),
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isConfirmPasswordVisible
+                            ? Icons.visibility_off
+                            : Icons.visibility,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isConfirmPasswordVisible =
+                              !_isConfirmPasswordVisible;
+                        });
+                      },
+                    ),
+                    border: const OutlineInputBorder(),
                   ),
                 ),
                 const SizedBox(height: 24),
 
-                // Login button
+                // Sign Up button
                 SizedBox(
                   height: 48,
                   child: ElevatedButton(
-                    onPressed: _isLoading ? null : _login,
+                    onPressed: _isLoading ? null : _signUp,
                     style: ElevatedButton.styleFrom(
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -179,30 +255,27 @@ class _LoginPageState extends State<LoginPage> {
                               child: CircularProgressIndicator(strokeWidth: 2),
                             )
                             : const Text(
-                              'Login',
+                              'Sign Up',
                               style: TextStyle(fontSize: 16),
                             ),
                   ),
                 ),
-                const SizedBox(height: 16),
-
                 const SizedBox(height: 24),
 
-                // Sign up link
+                // Sign in link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Don't have an account? "),
+                    const Text('Already have an account? '),
                     TextButton(
                       onPressed: () {
-                        // Navigate to sign up page
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => SignUpPage()),
+                          MaterialPageRoute(builder: (context) => LoginPage()),
                         );
                       },
                       child: const Text(
-                        'Sign Up',
+                        'Sign In',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ),
