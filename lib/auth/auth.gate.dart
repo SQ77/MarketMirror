@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:marketmirror/pages/login_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:marketmirror/pages/login_page.dart';
+import 'package:marketmirror/pages/home_page.dart';
 
 class AuthGate extends StatelessWidget {
   const AuthGate({super.key});
@@ -19,7 +20,7 @@ class AuthGate extends StatelessWidget {
         final session = snapshot.hasData ? snapshot.data!.session : null;
 
         if (session != null) {
-          return ProfilePage();
+          return HomePage();
         } else {
           return LoginPage();
         }
