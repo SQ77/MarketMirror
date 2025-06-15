@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:marketmirror/pages/main_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:marketmirror/pages/login_page.dart';
-import 'package:marketmirror/pages/home_page.dart';
+import 'package:marketmirror/pages/login/login_page.dart';
 
 class AuthGate extends StatefulWidget {
   const AuthGate({super.key});
@@ -46,7 +46,7 @@ class _AuthGateState extends State<AuthGate> {
             Supabase.instance.client.auth.currentSession;
 
         if (session != null) {
-          return const HomePage();
+          return const MainPage();
         } else {
           return const LoginPage();
         }

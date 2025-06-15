@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class TrendingPage extends StatelessWidget {
-  const TrendingPage({super.key});
+class HottestPage extends StatelessWidget {
+  const HottestPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: const Center(
-        child: Text("Trending Page")));
+        child: Text("Hottest Page")));
   }
 }
