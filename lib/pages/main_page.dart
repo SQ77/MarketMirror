@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:marketmirror/pages/best_page.dart';
 import 'package:marketmirror/pages/trending_page.dart';
 import 'package:marketmirror/pages/hottest_page.dart';
+import 'package:marketmirror/pages/user_AppBar.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -22,7 +23,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("MirrorMarket")),
+      appBar: const UserAppbar(),
       body: pages[currentPage],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,
