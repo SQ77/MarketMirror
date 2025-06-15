@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:marketmirror/pages/best_page.dart';
-import 'package:marketmirror/pages/trending_page.dart';
-import 'package:marketmirror/pages/hottest_page.dart';
-import 'package:marketmirror/pages/user_AppBar.dart';
+import 'package:marketmirror/pages/news/best_page.dart';
+import 'package:marketmirror/pages/news/trending_page.dart';
+import 'package:marketmirror/pages/news/hottest_page.dart';
+import 'package:marketmirror/pages/userAppBar/user_AppBar.dart';
+import 'package:marketmirror/pages/userAppBar/user_NavigationDrawer.dart';
+
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -24,6 +26,7 @@ class _MainPageState extends State<MainPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const UserAppbar(),
+      drawer: const UserNavigationdrawer(),
       body: pages[currentPage],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,
