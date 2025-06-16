@@ -9,7 +9,7 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  final AuthService _authService = AuthService(); // assuming your auth service
+  final AuthService _authService = AuthService();
   bool _isSigningOut = false;
 
   Future<void> _signOut() async {
@@ -21,13 +21,15 @@ class _UserProfileState extends State<UserProfile> {
       await _authService.signOut();
       // AuthGate handles redirection
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Sign out failed: $e'),
-          backgroundColor: Theme.of(context).colorScheme.error,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Sign out failed: $e'),
+            backgroundColor: Theme.of(context).colorScheme.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
     } finally {
       setState(() {
         _isSigningOut = false;
@@ -64,17 +66,18 @@ class _UserProfileState extends State<UserProfile> {
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       icon: Icon(Icons.person),
-      itemBuilder: (context) => [
-        const PopupMenuItem(
-          value: 'account',
-          child: Text("Account Settings"),
-        ),
-        PopupMenuItem(
-          value: 'signout',
-          child: const Text("Sign Out"),
-          onTap: _showSignOutDialog,
-        ),
-      ],
+      itemBuilder:
+          (context) => [
+            const PopupMenuItem(
+              value: 'account',
+              child: Text("Account Settings"),
+            ),
+            PopupMenuItem(
+              value: 'signout',
+              onTap: _showSignOutDialog,
+              child: const Text("Sign Out"),
+            ),
+          ],
     );
   }
 }

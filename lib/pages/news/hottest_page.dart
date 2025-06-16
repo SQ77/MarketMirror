@@ -5,8 +5,6 @@ class HottestPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: const Center(
-        child: Text("Hottest Page")));
+    return const Center(child: Text("Hottest Page"));
   }
 }
