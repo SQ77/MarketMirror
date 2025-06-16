@@ -22,12 +22,20 @@ class _MainPageState extends State<MainPage> {
 
   int currentPage = 0;
 
+  void _showChatTab() {
+    return;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const UserAppbar(),
       drawer: const UserNavigationdrawer(),
       body: pages[currentPage],
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.message),
+        onPressed: () => _showChatTab(),
+      ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentPage,
         onTap: (value) {
