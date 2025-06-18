@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:marketmirror/pages/userAppBar/user_Profile.dart';
+import 'package:marketmirror/pages/userAppBar/user_profile.dart';
 
 class UserAppbar extends StatelessWidget implements PreferredSizeWidget {
   const UserAppbar({super.key});
