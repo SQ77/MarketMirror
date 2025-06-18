@@ -79,7 +79,10 @@ class _TrendingPageState extends State<TrendingPage> {
             allNews.addAll(companyNews);
           }
         } catch (e) {
-          print('Error fetching news for $symbol: $e');
+          setState(() {
+            errorMessage = 'Failed to load news: $e';
+            isLoading = false;
+          });
         }
       }
 
