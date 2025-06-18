@@ -13,7 +13,7 @@ Future main() async {
   }
 
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
-  runApp(const );
+  runApp();
 }
 
 class MyApp extends StatelessWidget {
