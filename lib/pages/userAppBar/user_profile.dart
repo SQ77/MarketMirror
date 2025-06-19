@@ -10,13 +10,8 @@ class UserProfile extends StatefulWidget {
 
 class _UserProfileState extends State<UserProfile> {
   final AuthService _authService = AuthService();
-  bool _isSigningOut = false;
 
   Future<void> _signOut() async {
-    setState(() {
-      _isSigningOut = true;
-    });
-
     try {
       await _authService.signOut();
       // AuthGate handles redirection
@@ -30,10 +25,6 @@ class _UserProfileState extends State<UserProfile> {
           ),
         );
       }
-    } finally {
-      setState(() {
-        _isSigningOut = false;
-      });
     }
   }
 

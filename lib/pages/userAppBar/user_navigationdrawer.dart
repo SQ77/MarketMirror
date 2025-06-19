@@ -24,15 +24,6 @@ Widget buildHeader(BuildContext context) => Container(
 Widget buildMenuItems(context) => Column(
   children: [
     ListTile(
-      leading: const Icon(Icons.home_outlined),
-      title: const Text("Home"),
-      onTap: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const MainPage(),
-        ));
-      },
-    ),
-    ListTile(
       leading: const Icon(Icons.settings),
       title: const Text("Settings"),
       onTap: () {
