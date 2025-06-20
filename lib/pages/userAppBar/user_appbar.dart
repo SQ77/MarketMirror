@@ -14,7 +14,6 @@ class UserAppbar extends StatelessWidget implements PreferredSizeWidget {
               onPressed: () => Scaffold.of(context).openDrawer(),
             ),
       ),
-      backgroundColor: const Color.fromARGB(255, 212, 181, 212),
       title: const Text("Market Mirror"),
       actions: [const UserProfile()],
     );
