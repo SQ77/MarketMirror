@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:marketmirror/auth/auth_gate.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:marketmirror/theme.dart';
 
 Future main() async {
   await dotenv.load();
@@ -21,6 +22,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: AuthGate(), debugShowCheckedModeBanner: false);
+    return MaterialApp(
+      home: AuthGate(),
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.darkTheme,
+    );
   }
 }
