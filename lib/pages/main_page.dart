@@ -4,6 +4,7 @@ import 'package:marketmirror/pages/news/trending_page.dart';
 import 'package:marketmirror/pages/news/financial_page.dart';
 import 'package:marketmirror/pages/userAppBar/user_appbar.dart';
 import 'package:marketmirror/pages/userAppBar/user_navigationdrawer.dart';
+import 'package:marketmirror/pages/userAppBar/user_account.dart';
 import 'package:marketmirror/theme.dart';
 
 class MainPage extends StatefulWidget {
@@ -14,11 +15,9 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  List<Widget> pages = [
-    const TrendingPage(),
-    const BestPage(),
-    const HottestPage(),
-  ];
+  Widget defaultPage = const TrendingPage();
+
+  List<String> pages = ["trending","best", "hottest"];
 
   int currentPage = 0;
 
@@ -26,26 +25,46 @@ class _MainPageState extends State<MainPage> {
     return;
   }
 
+  void _onMenuSelected(String value) {
+    setState(() {
+      switch (value) {
+        case 'account':
+          defaultPage = UserAccount();
+          break;
+        case 'trending':
+          defaultPage = TrendingPage();
+          break;
+        case 'hottest':
+          defaultPage = HottestPage();
+          break;
+        case 'best':
+          defaultPage = BestPage();
+          break;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.darkBackground,
-      appBar: const UserAppbar(),
+      appBar: UserAppbar(onMenuSelected: _onMenuSelected),
       drawer: const UserNavigationdrawer(),
-      body: pages[currentPage],
+      body: defaultPage,
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppTheme.primaryGreen,
         child: const Icon(Icons.message),
         onPressed: () => _showChatTab(),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppTheme.surfaceColor, 
-        selectedItemColor: AppTheme.primaryGreen, 
+        backgroundColor: AppTheme.surfaceColor,
+        selectedItemColor: AppTheme.primaryGreen,
         unselectedItemColor: AppTheme.textSecondary,
         currentIndex: currentPage,
         onTap: (value) {
           setState(() {
             currentPage = value;
+            _onMenuSelected(pages[value]);
           });
         },
         items: [
