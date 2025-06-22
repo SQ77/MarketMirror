@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:marketmirror/pages/news/best_page.dart';
 import 'package:marketmirror/pages/news/trending_page.dart';
-import 'package:marketmirror/pages/news/hottest_page.dart';
+import 'package:marketmirror/pages/news/financial_page.dart';
 import 'package:marketmirror/pages/userAppBar/user_appbar.dart';
 import 'package:marketmirror/pages/userAppBar/user_navigationdrawer.dart';
 import 'package:marketmirror/theme.dart';
