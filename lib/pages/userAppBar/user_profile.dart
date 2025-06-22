@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:marketmirror/auth/auth_service.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+  final void Function(String) changeMenu;
+
+  const UserProfile({super.key, required this.changeMenu});
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -53,21 +55,31 @@ class _UserProfileState extends State<UserProfile> {
     );
   }
 
+  void _showAccountDetails() {
+    widget.changeMenu('account');
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton<String>(
       icon: Icon(Icons.person),
+      onSelected: (String value) {
+        switch (value) {
+          case 'account':
+            _showAccountDetails();
+            break;
+          case 'signout':
+            _showSignOutDialog();
+            break;
+        }
+      },
       itemBuilder:
           (context) => [
             const PopupMenuItem(
               value: 'account',
               child: Text("Account Settings"),
             ),
-            PopupMenuItem(
-              value: 'signout',
-              onTap: _showSignOutDialog,
-              child: const Text("Sign Out"),
-            ),
+            PopupMenuItem(value: 'signout', child: const Text("Sign Out")),
           ],
     );
   }
