@@ -19,7 +19,6 @@ class _TrendingPageState extends State<TrendingPage> {
   // Get API key from environment variables
   String get apiKey => dotenv.env['FINNHUB_API_KEY'] ?? '';
 
-  // List of North American companies
   final List<String> companies = [
     'AAPL', // Apple
     'MSFT', // Microsoft
@@ -28,7 +27,6 @@ class _TrendingPageState extends State<TrendingPage> {
     'AMZN', // Amazon
     'NVDA', // NVIDIA
     'META', // Meta
-    'NFLX', // Netflix
   ];
 
   @override
@@ -109,6 +107,10 @@ class _TrendingPageState extends State<TrendingPage> {
     }
   }
 
+  String getCompanyLogoPath(String ticker) {
+    return 'assets/company_logos/${ticker.toUpperCase()}.png';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -149,33 +151,23 @@ class _TrendingPageState extends State<TrendingPage> {
                     return Card(
                       margin: const EdgeInsets.all(8.0),
                       child: ListTile(
-                        leading:
-                            news.image.isNotEmpty
-                                ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  child: Image.network(
-                                    news.image,
-                                    width: 60,
-                                    height: 60,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Container(
-                                        width: 60,
-                                        height: 60,
-                                        color: Colors.grey[300],
-                                        child: const Icon(
-                                          Icons.image_not_supported,
-                                        ),
-                                      );
-                                    },
-                                  ),
-                                )
-                                : Container(
-                                  width: 60,
-                                  height: 60,
-                                  color: Colors.grey[300],
-                                  child: const Icon(Icons.article),
-                                ),
+                        leading: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.0),
+                          child: Image.asset(
+                            getCompanyLogoPath(news.symbol),
+                            width: 60,
+                            height: 60,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                width: 60,
+                                height: 60,
+                                color: Colors.grey[300],
+                                child: const Icon(Icons.image_not_supported),
+                              );
+                            },
+                          ),
+                        ),
                         title: Text(
                           news.headline,
                           maxLines: 2,
