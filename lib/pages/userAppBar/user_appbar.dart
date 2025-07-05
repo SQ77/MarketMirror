@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:marketmirror/pages/userAppBar/user_profile.dart';
 
 class UserAppbar extends StatelessWidget implements PreferredSizeWidget {
-  const UserAppbar({super.key});
+
+  final void Function(String) onMenuSelected;
+
+  const UserAppbar({super.key, required this.onMenuSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +18,7 @@ class UserAppbar extends StatelessWidget implements PreferredSizeWidget {
             ),
       ),
       title: const Text("Market Mirror"),
-      actions: [const UserProfile()],
+      actions: [UserProfile(changeMenu : onMenuSelected)],
     );
   }
 
