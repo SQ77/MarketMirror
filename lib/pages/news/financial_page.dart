@@ -106,7 +106,10 @@ class _HottestPageState extends State<HottestPage> {
             companyFinancials.add(financials);
           });
         } else {
-          print('No financial data for $symbol');
+          setState(() {
+            errorMessage = 'No financial data for $symbol';
+            isLoading = false;
+          });
         }
       } else if (response.statusCode == 429) {
         // Rate limited
@@ -117,11 +120,16 @@ class _HottestPageState extends State<HottestPage> {
         });
         return;
       } else {
-        print('HTTP Error for $symbol: ${response.statusCode}');
-        print('Response: ${response.body}');
+        setState(() {
+          errorMessage = 'HTTP Error for $symbol: ${response.statusCode}';
+          isLoading = false;
+        });
       }
     } catch (e) {
-      print('Error fetching $symbol: $e');
+      setState(() {
+        errorMessage = 'Error fetching $symbol: $e';
+        isLoading = false;
+      });
     }
 
     currentCompanyIndex++;
@@ -140,8 +148,6 @@ class _HottestPageState extends State<HottestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Company Financials'),
-        backgroundColor: Colors.blue,
         actions: [
           IconButton(
             onPressed: isLoading ? null : fetchCompanyFinancials,
@@ -367,7 +373,7 @@ class _HottestPageState extends State<HottestPage> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.1),
+            color: Colors.grey,
             borderRadius: BorderRadius.circular(8),
           ),
           child: Column(children: metrics),

@@ -5,6 +5,6 @@ class UserAccount extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Container(child: const Text("Hello")));
+    return Scaffold(body: const Text("Hello"));
   }
 }
