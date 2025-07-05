@@ -16,13 +16,8 @@ class _HottestPageState extends State<HottestPage> {
   String errorMessage = '';
   int currentCompanyIndex = 0;
 
-  String get apiKey {
-    try {
-      return dotenv.env['FINNHUB_API_KEY'] ?? '';
-    } catch (e) {
-      return ''; // Return empty if .env file not found
-    }
-  }
+  // Get API key from environment variables
+  String get apiKey => dotenv.env['FINNHUB_API_KEY'] ?? '';
 
   // Company list with symbols and names
   final List<Map<String, String>> companies = [
