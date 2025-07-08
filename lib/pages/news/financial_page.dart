@@ -2,15 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'company_info_page.dart'; 
 
-class HottestPage extends StatefulWidget {
-  const HottestPage({super.key});
+class FinancialPage extends StatefulWidget {
+  const FinancialPage({super.key});
 
   @override
-  State<HottestPage> createState() => _HottestPageState();
+  State<FinancialPage> createState() => _FinancialPageState();
 }
 
-class _HottestPageState extends State<HottestPage> {
+class _FinancialPageState extends State<FinancialPage> {
   List<CompanyFinancials> companyFinancials = [];
   bool isLoading = true;
   String errorMessage = '';
@@ -20,11 +21,10 @@ class _HottestPageState extends State<HottestPage> {
     try {
       return dotenv.env['FINNHUB_API_KEY'] ?? '';
     } catch (e) {
-      return ''; // Return empty if .env file not found
+      return '';
     }
   }
 
-  // Company list with symbols and names
   final List<Map<String, String>> companies = [
     {'symbol': 'AAPL', 'name': 'Apple Inc.'},
     {'symbol': 'MSFT', 'name': 'Microsoft Corp.'},
@@ -112,7 +112,6 @@ class _HottestPageState extends State<HottestPage> {
           });
         }
       } else if (response.statusCode == 429) {
-        // Rate limited
         setState(() {
           errorMessage =
               'Rate limit exceeded. Please wait a moment before trying again.';
@@ -135,7 +134,6 @@ class _HottestPageState extends State<HottestPage> {
     currentCompanyIndex++;
 
     if (currentCompanyIndex < companies.length) {
-      setState(() {});
       await _fetchNextCompany();
     } else {
       setState(() {
@@ -148,6 +146,7 @@ class _HottestPageState extends State<HottestPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        title: const Text("Company Financials"),
         actions: [
           IconButton(
             onPressed: isLoading ? null : fetchCompanyFinancials,
@@ -157,256 +156,138 @@ class _HottestPageState extends State<HottestPage> {
       ),
       body:
           isLoading
-              ? Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const CircularProgressIndicator(),
-                    const SizedBox(height: 16),
-                    Text(
-                      'Loading ${currentCompanyIndex + 1}/${companies.length}...',
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    if (currentCompanyIndex < companies.length)
+              ? _buildLoading()
+              : errorMessage.isNotEmpty
+              ? _buildError()
+              : companyFinancials.isEmpty
+              ? _buildNoData()
+              : _buildCompanyList(),
+    );
+  }
+
+  Widget _buildLoading() {
+    return Center(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const CircularProgressIndicator(),
+          const SizedBox(height: 16),
+          Text(
+            'Loading ${currentCompanyIndex + 1}/${companies.length}...',
+            style: const TextStyle(fontSize: 16),
+          ),
+          if (currentCompanyIndex < companies.length)
+            Text(
+              'Fetching ${companies[currentCompanyIndex]['name']}',
+              style: const TextStyle(fontSize: 14, color: Colors.grey),
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildError() {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(Icons.error_outline, size: 64, color: Colors.red),
+            const SizedBox(height: 16),
+            Text(
+              errorMessage,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 16),
+            ),
+            const SizedBox(height: 24),
+            ElevatedButton.icon(
+              onPressed: fetchCompanyFinancials,
+              icon: const Icon(Icons.refresh),
+              label: const Text('Try Again'),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildNoData() {
+    return const Center(
+      child: Text(
+        'No financial data available.\nTry refreshing or check back later.',
+        textAlign: TextAlign.center,
+        style: TextStyle(fontSize: 16),
+      ),
+    );
+  }
+
+  Widget _buildCompanyList() {
+    return ListView.builder(
+      padding: const EdgeInsets.all(16),
+      itemCount: companyFinancials.length,
+      itemBuilder: (context, index) {
+        final company = companyFinancials[index];
+        return InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => CompanyInfoPage(company: company),
+              ),
+            );
+          },
+          child: Card(
+            margin: const EdgeInsets.only(bottom: 16),
+            elevation: 4,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
                       Text(
-                        'Fetching ${companies[currentCompanyIndex]['name']}',
+                        company.symbol,
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      Text(
+                        company.companyName,
+                        style: const TextStyle(
+                          fontSize: 16,
                           color: Colors.grey,
                         ),
                       ),
-                  ],
-                ),
-              )
-              : errorMessage.isNotEmpty
-              ? Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Icon(
-                        Icons.error_outline,
-                        size: 64,
-                        color: Colors.red,
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        errorMessage,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 16),
-                      ),
-                      const SizedBox(height: 24),
-                      ElevatedButton.icon(
-                        onPressed: fetchCompanyFinancials,
-                        icon: const Icon(Icons.refresh),
-                        label: const Text('Try Again'),
-                      ),
                     ],
                   ),
-                ),
-              )
-              : companyFinancials.isEmpty
-              ? const Center(
-                child: Text(
-                  'No financial data available.\nTry refreshing or check back later.',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 16),
-                ),
-              )
-              : ListView.builder(
-                padding: const EdgeInsets.all(16),
-                itemCount: companyFinancials.length,
-                itemBuilder: (context, index) {
-                  final company = companyFinancials[index];
-
-                  return Card(
-                    margin: const EdgeInsets.only(bottom: 16),
-                    elevation: 4,
-                    child: Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // Header
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    company.symbol,
-                                    style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.blue,
-                                    ),
-                                  ),
-                                  Text(
-                                    company.companyName,
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.grey,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              if (company.currentPrice != null)
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(
-                                      '\$${company.currentPrice!.toStringAsFixed(2)}',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    const Text(
-                                      'Current Price',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Colors.grey,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                            ],
+                  if (company.currentPrice != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          '\$${company.currentPrice!.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
                           ),
-                          const SizedBox(height: 20),
-
-                          // Key Metrics
-                          const Text(
-                            'Key Financial Metrics',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 12),
-
-                          // Valuation Metrics
-                          _buildMetricsSection('Valuation', [
-                            _buildMetricRow('P/E Ratio', company.peRatio),
-                            _buildMetricRow('P/B Ratio', company.pbRatio),
-                            _buildMetricRow('EV/Revenue', company.evRevenue),
-                            _buildMetricRow('EV/EBITDA', company.evEbitda),
-                          ]),
-
-                          // Profitability Metrics
-                          _buildMetricsSection('Profitability', [
-                            _buildMetricRow(
-                              'Gross Margin',
-                              company.grossMargin,
-                              isPercentage: true,
-                            ),
-                            _buildMetricRow(
-                              'Operating Margin',
-                              company.operatingMargin,
-                              isPercentage: true,
-                            ),
-                            _buildMetricRow(
-                              'Net Margin',
-                              company.netMargin,
-                              isPercentage: true,
-                            ),
-                            _buildMetricRow(
-                              'ROE',
-                              company.roe,
-                              isPercentage: true,
-                            ),
-                            _buildMetricRow(
-                              'ROA',
-                              company.roa,
-                              isPercentage: true,
-                            ),
-                          ]),
-
-                          // Price Performance
-                          _buildMetricsSection('Price Performance', [
-                            _buildMetricRow('52W High', company.week52High),
-                            _buildMetricRow('52W Low', company.week52Low),
-                            _buildMetricRow('Beta', company.beta),
-                          ]),
-
-                          // Growth & Efficiency
-                          _buildMetricsSection('Growth & Efficiency', [
-                            _buildMetricRow(
-                              'Revenue Growth',
-                              company.revenueGrowth,
-                              isPercentage: true,
-                            ),
-                            _buildMetricRow(
-                              'EPS Growth',
-                              company.epsGrowth,
-                              isPercentage: true,
-                            ),
-                            _buildMetricRow(
-                              'Asset Turnover',
-                              company.assetTurnover,
-                            ),
-                          ]),
-                        ],
-                      ),
+                        ),
+                        const Text(
+                          'Current Price',
+                          style: TextStyle(fontSize: 12, color: Colors.grey),
+                        ),
+                      ],
                     ),
-                  );
-                },
+                ],
               ),
-    );
-  }
-
-  Widget _buildMetricsSection(String title, List<Widget> metrics) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(height: 16),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w600,
-            color: Colors.blue,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Colors.grey,
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Column(children: metrics),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMetricRow(
-    String label,
-    double? value, {
-    bool isPercentage = false,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(label, style: const TextStyle(fontSize: 14)),
-          Text(
-            value != null
-                ? isPercentage
-                    ? '${(value * 100).toStringAsFixed(2)}%'
-                    : value.toStringAsFixed(2)
-                : 'N/A',
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: value != null ? Colors.black : Colors.grey,
             ),
           ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
