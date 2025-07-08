@@ -17,7 +17,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   Widget defaultPage = const TrendingPage();
 
-  List<String> pages = ["trending","best", "hottest"];
+  List<String> pages = ["trending", "best", "hottest"];
 
   int currentPage = 0;
 
@@ -35,7 +35,7 @@ class _MainPageState extends State<MainPage> {
           defaultPage = TrendingPage();
           break;
         case 'hottest':
-          defaultPage = HottestPage();
+          defaultPage = FinancialPage();
           break;
         case 'best':
           defaultPage = BestPage();
