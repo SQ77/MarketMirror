@@ -136,12 +136,12 @@ class PredictPageState extends State<PredictPage>
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: const Color(0xFF00C896).withValues(alpha: 0.1 * 255),
+                  color: const Color(0xFF00C896),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Icon(
                   Icons.check_circle,
-                  color: Color(0xFF00C896),
+                  color: Colors.black,
                   size: 24,
                 ),
               ),
