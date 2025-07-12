@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_podium/flutter_podium.dart';
 
 class LeaderboardPage extends StatelessWidget {
   const LeaderboardPage({super.key});
@@ -9,45 +10,7 @@ class LeaderboardPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Expanded(
-          flex: 1,
-          child: Container(
-            width: double.infinity,
-            color: const Color.fromARGB(237, 57, 101, 221),
-            alignment: Alignment.center,
-            child: Padding(
-              padding: EdgeInsets.all(10),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center, // This centers the row contents
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Container(
-                        color: Colors.black,
-                        child: Text("Second"),
-                      ),
-                    ), // Second place
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Container(
-                        color: Colors.black,
-                        child: Text("First"),
-                      ),
-                    ), // First Place
-                    Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Container(
-                        color: Colors.black,
-                        child: Text("Third"),
-                      ),
-                    ), // Third Place
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ),
+        
         Expanded(
           flex: 2, 
           child: Container(
