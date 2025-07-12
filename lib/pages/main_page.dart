@@ -36,7 +36,7 @@ class _MainPageState extends State<MainPage> {
           defaultPage = TrendingPage();
           break;
         case 'hottest':
-          defaultPage = HottestPage();
+          defaultPage = FinancialPage();
           break;
         case 'predict':
           defaultPage = PredictPage();
