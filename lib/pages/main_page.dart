@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:marketmirror/pages/news/best_page.dart';
+import 'package:marketmirror/pages/news/predict_page.dart';
 import 'package:marketmirror/pages/news/trending_page.dart';
 import 'package:marketmirror/pages/news/financial_page.dart';
 import 'package:marketmirror/pages/userAppBar/user_appbar.dart';
@@ -17,7 +17,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   Widget defaultPage = const TrendingPage();
 
-  List<String> pages = ["trending","best", "hottest"];
+  List<String> pages = ["trending","predict", "hottest"];
 
   int currentPage = 0;
 
@@ -37,8 +37,8 @@ class _MainPageState extends State<MainPage> {
         case 'hottest':
           defaultPage = HottestPage();
           break;
-        case 'best':
-          defaultPage = BestPage();
+        case 'predict':
+          defaultPage = PredictPage();
           break;
       }
     });
@@ -72,7 +72,7 @@ class _MainPageState extends State<MainPage> {
             icon: Icon(Icons.trending_up),
             label: "Trending",
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.thumb_up), label: "Best"),
+          BottomNavigationBarItem(icon: Icon(Icons.poll), label: "Predict"),
           BottomNavigationBarItem(
             icon: Icon(Icons.local_fire_department),
             label: "Hottest",
