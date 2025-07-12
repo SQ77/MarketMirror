@@ -18,7 +18,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   Widget defaultPage = const TrendingPage();
 
-  List<String> pages = ["trending", "predict", "hottest", "leaderboard"];
+  List<String> pages = ["trending", "predict", "financial", "leaderboard"];
 
   int currentPage = 0;
 
@@ -35,7 +35,7 @@ class _MainPageState extends State<MainPage> {
         case 'trending':
           defaultPage = TrendingPage();
           break;
-        case 'hottest':
+        case 'financial':
           defaultPage = FinancialPage();
           break;
         case 'predict':
@@ -77,8 +77,8 @@ class _MainPageState extends State<MainPage> {
           ),
           BottomNavigationBarItem(icon: Icon(Icons.poll), label: "Predict"),
           BottomNavigationBarItem(
-            icon: Icon(Icons.local_fire_department),
-            label: "Hottest",
+            icon: Icon(Icons.attach_money),
+            label: "Financial",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.leaderboard), 
