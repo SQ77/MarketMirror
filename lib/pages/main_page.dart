@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:marketmirror/pages/news/predict_page.dart';
 import 'package:marketmirror/pages/news/trending_page.dart';
 import 'package:marketmirror/pages/news/financial_page.dart';
+import 'package:marketmirror/pages/news/leaderboard_page.dart';
 import 'package:marketmirror/pages/userAppBar/user_appbar.dart';
 import 'package:marketmirror/pages/userAppBar/user_navigationdrawer.dart';
 import 'package:marketmirror/pages/userAppBar/user_account.dart';
@@ -17,7 +18,7 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   Widget defaultPage = const TrendingPage();
 
-  List<String> pages = ["trending","predict", "hottest"];
+  List<String> pages = ["trending", "predict", "hottest", "leaderboard"];
 
   int currentPage = 0;
 
@@ -40,6 +41,8 @@ class _MainPageState extends State<MainPage> {
         case 'predict':
           defaultPage = PredictPage();
           break;
+        case 'leaderboard':
+          defaultPage = LeaderboardPage();
       }
     });
   }
@@ -76,6 +79,10 @@ class _MainPageState extends State<MainPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.local_fire_department),
             label: "Hottest",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.leaderboard), 
+            label: "Leaderboard",
           ),
         ],
       ),
