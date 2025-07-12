@@ -3,21 +3,48 @@ import 'package:flutter/material.dart';
 class LeaderboardPage extends StatelessWidget {
   const LeaderboardPage({super.key});
 
-  final List<String> entries = const <String>['A', 'B', 'C'];
+  final List<String> entries = const <String>['A', 'B', 'C', 'A', 'B', 'C', 'A', 'B', 'C'];
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         Expanded(
-          flex: 1, 
+          flex: 1,
           child: Container(
             width: double.infinity,
             color: const Color.fromARGB(237, 57, 101, 221),
             alignment: Alignment.center,
-            child: const Text(
-              "I'm number 1",
-              style: TextStyle(color: Colors.white, fontSize: 20),
+            child: Padding(
+              padding: EdgeInsets.all(10),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center, // This centers the row contents
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Container(
+                        color: Colors.black,
+                        child: Text("Second"),
+                      ),
+                    ), // Second place
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Container(
+                        color: Colors.black,
+                        child: Text("First"),
+                      ),
+                    ), // First Place
+                    Padding(
+                      padding: EdgeInsets.all(10),
+                      child: Container(
+                        color: Colors.black,
+                        child: Text("Third"),
+                      ),
+                    ), // Third Place
+                  ],
+                ),
+              ),
             ),
           ),
         ),
@@ -32,6 +59,7 @@ class LeaderboardPage extends StatelessWidget {
                   itemCount: entries.length,
                   itemBuilder: (BuildContext context, int index) {
                     return Container(
+                      margin: EdgeInsets.all(10),
                       padding: const EdgeInsets.all(12),
                       color: const Color.fromARGB(240, 169, 117, 218),
                       child: Center(child: Text('Entry ${entries[index]}')),
