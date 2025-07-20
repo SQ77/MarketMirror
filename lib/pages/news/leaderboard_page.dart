@@ -22,8 +22,7 @@ class LeaderboardPage extends StatelessWidget {
     try {
       final response = await Supabase.instance.client
           .from('user_scores')
-          .select('name, score')
-          .order('score', ascending: false);
+          .select('name, score');
 
       return List<Map<String, dynamic>>.from(response);
     } catch (error) {
@@ -41,9 +40,7 @@ class LeaderboardPage extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
 
-          final data = snapshot.data ?? leaderboardData;
-
-          print('Fetched leaderboard data: $data');
+          final data = snapshot.data;
 
           return Column(
             children: [
