@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:marketmirror/auth/auth_service.dart';
 import 'package:marketmirror/pages/login/login_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -74,12 +75,24 @@ class _SignUpPageState extends State<SignUpPage> {
 
     try {
       final response = await _authService.signUpWithEmailPassword(
+        // Use the AuthService to sign up
         _emailController.text.trim(),
         _passwordController.text,
       );
 
       if (mounted) {
         if (response.user != null) {
+          // User created successfully
+
+          // Insert email into the user_email table
+          final emailInserted = await Supabase.instance.client
+              .from('user_email')
+              .insert({'email': _emailController.text.trim()});
+
+          if (emailInserted.error == null) {
+            throw Exception('Failed to insert email into user_email table');
+          }
+
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
               content: Text(
