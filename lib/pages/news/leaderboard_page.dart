@@ -26,16 +26,62 @@ class LeaderboardPage extends StatelessWidget {
 
           // Podium for top 3
           Podium(
-            firstPosition: Text(leaderboardData[0]['name']),
-            secondPosition: Text(leaderboardData[1]['name']),
-            thirdPosition: Text(leaderboardData[2]['name']),
-            color: Colors.pink,
+            firstPosition: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  leaderboardData[0]['name'],
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                Text(
+                  '${leaderboardData[0]['score']} pts',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            secondPosition: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  leaderboardData[1]['name'],
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                Text(
+                  '${leaderboardData[1]['score']} pts',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            thirdPosition: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  leaderboardData[2]['name'],
+                  style: const TextStyle(color: Colors.white, fontSize: 16),
+                ),
+                Text(
+                  '${leaderboardData[2]['score']} pts',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+            color: const Color(0xFF00C896),
             rankingTextColor: Colors.white,
             rankingFontSize: 30,
             hideRanking: false,
             height: 250,
             width: 100,
-            horizontalSpacing: 3,
+            horizontalSpacing: 5,
+            showRankingNumberInsteadOfText: true,
           ),
 
           const SizedBox(height: 20),
@@ -49,10 +95,13 @@ class LeaderboardPage extends StatelessWidget {
                 final entry = leaderboardData[actualIndex];
 
                 return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+                  margin: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                    vertical: 6,
+                  ),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color: const Color.fromARGB(240, 169, 117, 218),
+                    color: Colors.grey[850],
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Row(
@@ -60,11 +109,17 @@ class LeaderboardPage extends StatelessWidget {
                     children: [
                       Text(
                         '${actualIndex + 1}. ${entry['name']}',
-                        style: const TextStyle(color: Colors.white, fontSize: 16),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 16,
+                        ),
                       ),
                       Text(
                         '${entry['score']} pts',
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ],
                   ),
