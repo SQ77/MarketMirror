@@ -17,13 +17,8 @@ class _FinancialPageState extends State<FinancialPage> {
   String errorMessage = '';
   int currentCompanyIndex = 0;
 
-  String get apiKey {
-    try {
-      return dotenv.env['FINNHUB_API_KEY'] ?? '';
-    } catch (e) {
-      return '';
-    }
-  }
+  // Get API key from environment variables
+  String get apiKey => dotenv.env['FINNHUB_API_KEY'] ?? '';
 
   final List<Map<String, String>> companies = [
     {'symbol': 'AAPL', 'name': 'Apple Inc.'},
@@ -32,6 +27,7 @@ class _FinancialPageState extends State<FinancialPage> {
     {'symbol': 'TSLA', 'name': 'Tesla Inc.'},
     {'symbol': 'AMZN', 'name': 'Amazon.com Inc.'},
     {'symbol': 'NVDA', 'name': 'NVIDIA Corp.'},
+    {'symbol': 'META', 'name': 'Meta Platforms, Inc.'},
   ];
 
   @override
