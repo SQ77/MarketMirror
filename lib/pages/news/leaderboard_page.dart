@@ -40,8 +40,6 @@ class LeaderboardPage extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
 
-          final data = snapshot.data;
-
           return Column(
             children: [
               const SizedBox(height: 20),
