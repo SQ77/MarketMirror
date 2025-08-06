@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Stock model
 class Stock {
@@ -72,9 +73,32 @@ class PredictPageState extends State<PredictPage>
     super.dispose();
   }
 
+  Future<void> updateUserPredictions(String stockname, String direction) async {
+    
+    int prediction = direction == 'UP' ? 1 : -1;
+    
+    print(stockname);
+    print(direction);
+    print(prediction);
+
+    try {
+      await Supabase.instance.client
+        .from('user_predictions')
+        .update({stockname : prediction})
+        .eq('username','derrickwong8909@gmail.com');
+    } catch (error) {
+      print(error);
+    }
+    print("Successfully updayed");
+    return;
+  }
+
   void _onSwipe(bool isUp) {
     String direction = isUp ? 'UP' : 'DOWN';
     String stockName = stocks[_currentIndex].name;
+    String stockSymbol = stocks[_currentIndex].symbol;
+
+    updateUserPredictions(stockSymbol, direction);
 
     // Show prediction result
     ScaffoldMessenger.of(context).showSnackBar(
