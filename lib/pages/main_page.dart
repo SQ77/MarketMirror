@@ -54,11 +54,6 @@ class _MainPageState extends State<MainPage> {
       appBar: UserAppbar(onMenuSelected: _onMenuSelected),
       drawer: const UserNavigationdrawer(),
       body: defaultPage,
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppTheme.primaryGreen,
-        child: const Icon(Icons.message),
-        onPressed: () => _showChatTab(),
-      ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppTheme.surfaceColor,
         selectedItemColor: AppTheme.primaryGreen,
