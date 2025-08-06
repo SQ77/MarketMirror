@@ -46,7 +46,9 @@ class _AuthGateState extends State<AuthGate> {
             Supabase.instance.client.auth.currentSession;
 
         if (session != null) {
-          return const MainPage();
+          final String username = session.user.email ?? 'Guest';
+
+          return MainPage(username : username);
         } else {
           return const LoginPage();
         }

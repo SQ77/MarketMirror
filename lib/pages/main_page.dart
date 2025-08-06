@@ -9,7 +9,9 @@ import 'package:marketmirror/pages/userAppBar/user_account.dart';
 import 'package:marketmirror/theme.dart';
 
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  const MainPage({super.key, required this.username});
+
+  final String username;
 
   @override
   State<MainPage> createState() => _MainPageState();
@@ -39,7 +41,7 @@ class _MainPageState extends State<MainPage> {
           defaultPage = FinancialPage();
           break;
         case 'predict':
-          defaultPage = PredictPage();
+          defaultPage = PredictPage(username: widget.username,);
           break;
         case 'leaderboard':
           defaultPage = LeaderboardPage();
@@ -52,7 +54,7 @@ class _MainPageState extends State<MainPage> {
     return Scaffold(
       backgroundColor: AppTheme.darkBackground,
       appBar: UserAppbar(onMenuSelected: _onMenuSelected),
-      drawer: const UserNavigationdrawer(),
+      drawer: UserNavigationdrawer(username: widget.username),
       body: defaultPage,
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppTheme.primaryGreen,
