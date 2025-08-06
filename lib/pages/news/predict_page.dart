@@ -12,7 +12,9 @@ class Stock {
 
 // Main predictions page
 class PredictPage extends StatefulWidget {
-  const PredictPage({super.key});
+  const PredictPage({super.key, required this.username});
+
+  final String username;
 
   @override
   PredictPageState createState() => PredictPageState();
@@ -74,23 +76,21 @@ class PredictPageState extends State<PredictPage>
   }
 
   Future<void> updateUserPredictions(String stockname, String direction) async {
-    
     int prediction = direction == 'UP' ? 1 : -1;
-    
-    print(stockname);
-    print(direction);
-    print(prediction);
 
     try {
-      await Supabase.instance.client
-        .from('user_predictions')
-        .update({stockname : prediction})
-        .eq('username','derrickwong8909@gmail.com');
+      await Supabase.instance.client.
+        from('user_predictions').
+        upsert({
+          'username': 'derrickwong8909@gmail.com',
+          stockname: prediction,
+        }, onConflict: 'username'
+      );
     } catch (error) {
       print(error);
     }
-    print("Successfully updayed");
-    return;
+
+    print("Successfully inserted or updated");
   }
 
   void _onSwipe(bool isUp) {
