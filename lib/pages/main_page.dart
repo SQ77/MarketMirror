@@ -24,10 +24,6 @@ class _MainPageState extends State<MainPage> {
 
   int currentPage = 0;
 
-  void _showChatTab() {
-    return;
-  }
-
   void _onMenuSelected(String value) {
     setState(() {
       switch (value) {
