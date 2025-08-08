@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 // Stock model
 class Stock {
@@ -11,7 +14,9 @@ class Stock {
 
 // Main predictions page
 class PredictPage extends StatefulWidget {
-  const PredictPage({super.key});
+  const PredictPage({super.key, required this.username});
+
+  final String username;
 
   @override
   PredictPageState createState() => PredictPageState();
@@ -72,9 +77,27 @@ class PredictPageState extends State<PredictPage>
     super.dispose();
   }
 
+  Future<void> updateUserPredictions(String stockname, String direction) async {
+    int prediction = direction == 'UP' ? 1 : -1;
+
+    try {
+      await Supabase.instance.client.from('user_predictions').upsert({
+        'username': 'derrickwong8909@gmail.com',
+        stockname: prediction,
+      }, onConflict: 'username');
+    } catch (error) {
+      log('Error updating predictions: $error');
+    }
+
+    return;
+  }
+
   void _onSwipe(bool isUp) {
     String direction = isUp ? 'UP' : 'DOWN';
     String stockName = stocks[_currentIndex].name;
+    String stockSymbol = stocks[_currentIndex].symbol;
+
+    updateUserPredictions(stockSymbol, direction);
 
     // Show prediction result
     ScaffoldMessenger.of(context).showSnackBar(

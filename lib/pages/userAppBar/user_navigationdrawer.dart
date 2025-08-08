@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:marketmirror/pages/main_page.dart';
 
 class UserNavigationdrawer extends StatelessWidget {
-  const UserNavigationdrawer({super.key});
+  const UserNavigationdrawer({super.key, required this.username});
+
+  final String username;
 
   @override
   Widget build(BuildContext context) {
@@ -26,20 +27,10 @@ Widget buildMenuItems(context) => Column(
     ListTile(
       leading: const Icon(Icons.settings),
       title: const Text("Settings"),
-      onTap: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const MainPage(),
-        ));
-      },
     ),
     ListTile(
       leading: const Icon(Icons.support),
       title: const Text("Contact us"),
-      onTap: () {
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const MainPage(),
-        ));
-      },
     ),
   ],
 );
