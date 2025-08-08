@@ -24,7 +24,6 @@ class LeaderboardPage extends StatelessWidget {
           .from('user_scores')
           .select('name, score')
           .order('score', ascending: false);
-      print(response);
       return List<Map<String, dynamic>>.from(response);
     } catch (error) {
       return leaderboardData;
