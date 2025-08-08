@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 
 class UserAccount extends StatelessWidget {
-  
   final String username;
 
   const UserAccount({super.key, required this.username});
+
+  void _changePassword() {
+    print("Change Password");
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +20,8 @@ class UserAccount extends StatelessWidget {
             children: [
               SizedBox(height: 80),
               Icon(Icons.person, size: 80),
+              Text(username),
               SizedBox(height: 40),
-              TextFormField(decoration: InputDecoration(labelText: 'Username')),
               SizedBox(height: 40),
               Text("Change Password"),
               SizedBox(height: 20),
@@ -28,6 +31,16 @@ class UserAccount extends StatelessWidget {
               SizedBox(height: 30),
               TextFormField(
                 decoration: InputDecoration(labelText: 'New Password'),
+              ),
+              SizedBox(height: 30),
+              OutlinedButton(
+                onPressed: _changePassword,
+                style: OutlinedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  )
+                ),
+                child: Text("Change Password"),
               ),
             ],
           ),
