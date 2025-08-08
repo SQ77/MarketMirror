@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -79,18 +81,15 @@ class PredictPageState extends State<PredictPage>
     int prediction = direction == 'UP' ? 1 : -1;
 
     try {
-      await Supabase.instance.client.
-        from('user_predictions').
-        upsert({
-          'username': 'derrickwong8909@gmail.com',
-          stockname: prediction,
-        }, onConflict: 'username'
-      );
+      await Supabase.instance.client.from('user_predictions').upsert({
+        'username': 'derrickwong8909@gmail.com',
+        stockname: prediction,
+      }, onConflict: 'username');
     } catch (error) {
-      print(error);
+      log('Error updating predictions: $error');
     }
 
-    print("Successfully inserted or updated");
+    return;
   }
 
   void _onSwipe(bool isUp) {
