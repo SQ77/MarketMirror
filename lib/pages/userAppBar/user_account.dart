@@ -6,7 +6,7 @@ class UserAccount extends StatelessWidget {
   const UserAccount({super.key, required this.username});
 
   void _changePassword() {
-    print("Change Password");
+    return;
   }
 
   @override
@@ -38,7 +38,7 @@ class UserAccount extends StatelessWidget {
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(20),
-                  )
+                  ),
                 ),
                 child: Text("Change Password"),
               ),
