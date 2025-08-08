@@ -5,6 +5,13 @@ class ContactPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(child: Text("Contact Us"));
+    return Center(
+      child: Padding(
+        padding : const EdgeInsets.only(right: 30, left: 30),
+        child: Column(children: [
+          
+        ],)
+      )
+    );
   }
 }
