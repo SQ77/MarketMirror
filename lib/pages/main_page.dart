@@ -37,7 +37,7 @@ class _MainPageState extends State<MainPage> {
     setState(() {
       switch (value) {
         case 'account':
-          defaultPage = UserAccount();
+          defaultPage = UserAccount(username: widget.username);
           break;
 
         case 'trending':

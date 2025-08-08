@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class UserAccount extends StatelessWidget {
-  const UserAccount({super.key});
+  
+  final String username;
+
+  const UserAccount({super.key, required this.username});
 
   @override
   Widget build(BuildContext context) {
@@ -15,29 +18,21 @@ class UserAccount extends StatelessWidget {
               SizedBox(height: 80),
               Icon(Icons.person, size: 80),
               SizedBox(height: 40),
-              TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Username',
-                ),
-              ),
+              TextFormField(decoration: InputDecoration(labelText: 'Username')),
               SizedBox(height: 40),
               Text("Change Password"),
               SizedBox(height: 20),
               TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'Old Password',
-                ),
+                decoration: InputDecoration(labelText: 'Old Password'),
               ),
               SizedBox(height: 30),
               TextFormField(
-                decoration: InputDecoration(
-                  labelText: 'New Password',
-                ),
-              )
+                decoration: InputDecoration(labelText: 'New Password'),
+              ),
             ],
-          ) 
+          ),
         ),
-      )
+      ),
     );
   }
 }
