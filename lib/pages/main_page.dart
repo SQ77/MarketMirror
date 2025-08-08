@@ -4,7 +4,7 @@ import 'package:marketmirror/pages/news/trending_page.dart';
 import 'package:marketmirror/pages/news/financial_page.dart';
 import 'package:marketmirror/pages/news/leaderboard_page.dart';
 import 'package:marketmirror/pages/userAppBar/user_appbar.dart';
-import 'package:marketmirror/pages/userAppBar/user_navigationdrawer.dart';
+import 'package:marketmirror/pages/userAppBar/user_navigation_drawer.dart';
 import 'package:marketmirror/pages/userAppBar/user_account.dart';
 import 'package:marketmirror/pages/account/settings_page.dart';
 import 'package:marketmirror/pages/account/contact_page.dart';
@@ -39,21 +39,31 @@ class _MainPageState extends State<MainPage> {
         case 'account':
           defaultPage = UserAccount();
           break;
+
         case 'trending':
           defaultPage = TrendingPage();
+          currentPage = 0;
           break;
-        case 'financial':
-          defaultPage = FinancialPage();
-          break;
+
         case 'predict':
           defaultPage = PredictPage(username: widget.username);
+          currentPage = 1;
           break;
+
+        case 'financial':
+          defaultPage = FinancialPage();
+          currentPage = 2;
+          break;
+
         case 'leaderboard':
           defaultPage = LeaderboardPage();
+          currentPage = 3;
           break;
+
         case 'settings':
           defaultPage = SettingsPage();
           break;
+
         case 'contact':
           defaultPage = ContactPage();
       }
