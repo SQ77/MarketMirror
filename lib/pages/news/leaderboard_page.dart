@@ -22,8 +22,8 @@ class LeaderboardPage extends StatelessWidget {
     try {
       final response = await Supabase.instance.client
           .from('user_scores')
-          .select('name, score');
-
+          .select('name, score')
+          .order('score', ascending: false);
       return List<Map<String, dynamic>>.from(response);
     } catch (error) {
       return leaderboardData;
@@ -40,6 +40,10 @@ class LeaderboardPage extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
 
+          final currentData = (snapshot.data == null || snapshot.data!.isEmpty)
+            ? leaderboardData
+            : snapshot.data!;
+          
           return Column(
             children: [
               const SizedBox(height: 20),
@@ -50,11 +54,11 @@ class LeaderboardPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      leaderboardData[0]['name'],
+                      currentData[0]['name'],
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     Text(
-                      '${leaderboardData[0]['score']} pts',
+                      '${currentData[0]['score']} pts',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -66,11 +70,11 @@ class LeaderboardPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      leaderboardData[1]['name'],
+                      currentData[1]['name'],
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     Text(
-                      '${leaderboardData[1]['score']} pts',
+                      '${currentData[1]['score']} pts',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -82,11 +86,11 @@ class LeaderboardPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      leaderboardData[2]['name'],
+                      currentData[2]['name'],
                       style: const TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     Text(
-                      '${leaderboardData[2]['score']} pts',
+                      '${currentData[2]['score']} pts',
                       style: const TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
