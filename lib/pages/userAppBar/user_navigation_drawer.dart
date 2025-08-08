@@ -36,6 +36,11 @@ class UserNavigationdrawer extends StatelessWidget {
   Widget buildMenuItems(context) => Column(
     children: [
       ListTile(
+        leading: const Icon(Icons.home),
+        title: const Text("Home"),
+        onTap: () => onMenuSelected('trending'),
+      ),
+      ListTile(
         leading: const Icon(Icons.settings),
         title: const Text("Settings"),
         onTap: () => onMenuSelected('settings'),
